@@ -1,0 +1,200 @@
+Data Scientist 	 AL
+Data Scientist 	 AK
+Data Scientist 	 AZ
+Data Scientist 	 AR
+Data Scientist 	 CA
+Data Scientist 	 CO
+Data Scientist 	 CT
+Data Scientist 	 DE
+Data Scientist 	 FL
+Data Scientist 	 GA
+Data Scientist 	 HI
+Data Scientist 	 ID
+Data Scientist 	 IL
+Data Scientist 	 IN
+Data Scientist 	 IA
+Data Scientist 	 KS
+Data Scientist 	 KY
+Data Scientist 	 LA
+Data Scientist 	 ME
+Data Scientist 	 MD
+Data Scientist 	 MA
+Data Scientist 	 MI
+Data Scientist 	 MN
+Data Scientist 	 MS
+Data Scientist 	 MO
+Data Scientist 	 MT
+Data Scientist 	 NE
+Data Scientist 	 NV
+Data Scientist 	 NH
+Data Scientist 	 NJ
+Data Scientist 	 NM
+Data Scientist 	 NY
+Data Scientist 	 NC
+Data Scientist 	 ND
+Data Scientist 	 OH
+Data Scientist 	 OK
+Data Scientist 	 OR
+Data Scientist 	 PA
+Data Scientist 	 RI
+Data Scientist 	 SC
+Data Scientist 	 SD
+Data Scientist 	 TN
+Data Scientist 	 TX
+Data Scientist 	 UT
+Data Scientist 	 VT
+Data Scientist 	 VA
+Data Scientist 	 WA
+Data Scientist 	 WV
+Data Scientist 	 WI
+Data Scientist 	 WY
+Data Analyst 	 AL
+Data Analyst 	 AK
+Data Analyst 	 AZ
+Data Analyst 	 AR
+Data Analyst 	 CA
+Data Analyst 	 CO
+Data Analyst 	 CT
+Data Analyst 	 DE
+Data Analyst 	 FL
+Data Analyst 	 GA
+Data Analyst 	 HI
+Data Analyst 	 ID
+Data Analyst 	 IL
+Data Analyst 	 IN
+Data Analyst 	 IA
+Data Analyst 	 KS
+Data Analyst 	 KY
+Data Analyst 	 LA
+Data Analyst 	 ME
+Data Analyst 	 MD
+Data Analyst 	 MA
+Data Analyst 	 MI
+Data Analyst 	 MN
+Data Analyst 	 MS
+Data Analyst 	 MO
+Data Analyst 	 MT
+Data Analyst 	 NE
+Data Analyst 	 NV
+Data Analyst 	 NH
+Data Analyst 	 NJ
+Data Analyst 	 NM
+Data Analyst 	 NY
+Data Analyst 	 NC
+Data Analyst 	 ND
+Data Analyst 	 OH
+Data Analyst 	 OK
+Data Analyst 	 OR
+Data Analyst 	 PA
+Data Analyst 	 RI
+Data Analyst 	 SC
+Data Analyst 	 SD
+Data Analyst 	 TN
+Data Analyst 	 TX
+Data Analyst 	 UT
+Data Analyst 	 VT
+Data Analyst 	 VA
+Data Analyst 	 WA
+Data Analyst 	 WV
+Data Analyst 	 WI
+Data Analyst 	 WY
+Data Engineer 	 AL
+Data Engineer 	 AK
+Data Engineer 	 AZ
+Data Engineer 	 AR
+Data Engineer 	 CA
+Data Engineer 	 CO
+Data Engineer 	 CT
+Data Engineer 	 DE
+Data Engineer 	 FL
+Data Engineer 	 GA
+Data Engineer 	 HI
+Data Engineer 	 ID
+Data Engineer 	 IL
+Data Engineer 	 IN
+Data Engineer 	 IA
+Data Engineer 	 KS
+Data Engineer 	 KY
+Data Engineer 	 LA
+Data Engineer 	 ME
+Data Engineer 	 MD
+Data Engineer 	 MA
+Data Engineer 	 MI
+Data Engineer 	 MN
+Data Engineer 	 MS
+Data Engineer 	 MO
+Data Engineer 	 MT
+Data Engineer 	 NE
+Data Engineer 	 NV
+Data Engineer 	 NH
+Data Engineer 	 NJ
+Data Engineer 	 NM
+Data Engineer 	 NY
+Data Engineer 	 NC
+Data Engineer 	 ND
+Data Engineer 	 OH
+Data Engineer 	 OK
+Data Engineer 	 OR
+Data Engineer 	 PA
+Data Engineer 	 RI
+Data Engineer 	 SC
+Data Engineer 	 SD
+Data Engineer 	 TN
+Data Engineer 	 TX
+Data Engineer 	 UT
+Data Engineer 	 VT
+Data Engineer 	 VA
+Data Engineer 	 WA
+Data Engineer 	 WV
+Data Engineer 	 WI
+Data Engineer 	 WY
+Machine Learning Engineer 	 AL
+Machine Learning Engineer 	 AK
+Machine Learning Engineer 	 AZ
+Machine Learning Engineer 	 AR
+Machine Learning Engineer 	 CA
+Machine Learning Engineer 	 CO
+Machine Learning Engineer 	 CT
+Machine Learning Engineer 	 DE
+Machine Learning Engineer 	 FL
+Machine Learning Engineer 	 GA
+Machine Learning Engineer 	 HI
+Machine Learning Engineer 	 ID
+Machine Learning Engineer 	 IL
+Machine Learning Engineer 	 IN
+Machine Learning Engineer 	 IA
+Machine Learning Engineer 	 KS
+Machine Learning Engineer 	 KY
+Machine Learning Engineer 	 LA
+Machine Learning Engineer 	 ME
+Machine Learning Engineer 	 MD
+Machine Learning Engineer 	 MA
+Machine Learning Engineer 	 MI
+Machine Learning Engineer 	 MN
+Machine Learning Engineer 	 MS
+Machine Learning Engineer 	 MO
+Machine Learning Engineer 	 MT
+Machine Learning Engineer 	 NE
+Machine Learning Engineer 	 NV
+Machine Learning Engineer 	 NH
+Machine Learning Engineer 	 NJ
+Machine Learning Engineer 	 NM
+Machine Learning Engineer 	 NY
+Machine Learning Engineer 	 NC
+Machine Learning Engineer 	 ND
+Machine Learning Engineer 	 OH
+Machine Learning Engineer 	 OK
+Machine Learning Engineer 	 OR
+Machine Learning Engineer 	 PA
+Machine Learning Engineer 	 RI
+Machine Learning Engineer 	 SC
+Machine Learning Engineer 	 SD
+Machine Learning Engineer 	 TN
+Machine Learning Engineer 	 TX
+Machine Learning Engineer 	 UT
+Machine Learning Engineer 	 VT
+Machine Learning Engineer 	 VA
+Machine Learning Engineer 	 WA
+Machine Learning Engineer 	 WV
+Machine Learning Engineer 	 WI
+Machine Learning Engineer 	 WY

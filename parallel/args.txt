@@ -1,0 +1,24 @@
+Machine Learning Engineer 	Malaysia
+Machine Learning Engineer 	Vietnam
+Machine Learning Engineer 	Thailand
+Machine Learning Engineer 	Singapore
+Machine Learning Engineer 	Philippines
+Machine Learning Engineer 	Indonesia
+Data Analyst 	Malaysia
+Data Analyst 	Vietnam
+Data Analyst 	Thailand
+Data Analyst 	Singapore
+Data Analyst 	Philippines
+Data Analyst 	Indonesia
+Data Engineer 	Malaysia
+Data Engineer 	Vietnam
+Data Engineer 	Thailand
+Data Engineer 	Singapore
+Data Engineer 	Philippines
+Data Engineer 	Indonesia
+Data Scientist 	Malaysia
+Data Scientist 	Vietnam
+Data Scientist 	Thailand
+Data Scientist 	Singapore
+Data Scientist 	Philippines
+Data Scientist 	Indonesia

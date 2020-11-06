@@ -23,7 +23,7 @@ ___parallel <br>
     __`scraper.py` <br>
     __`scraper_usa.py` <br>
     __`cleaner.py` <br>
-    __`cleaner_usa.py`
+    __`cleaner_usa.py` <br>
     __`args.txt`<br>
     __`args_usa.txt`<br>
     __`output`<br>
@@ -44,3 +44,5 @@ python3 cleaner_usa.py
 
 ### Note
 Running all the scripts concurrently might result in IP being blocked by Indeed. A shadow user agent and proxy rotation is being used in the script but they do not work very well. To circumstance this, try scraping at diffrent time and scrape for each job separately (Running the scraper script separtely at different time instead of using parallel).
+
+Please contact me for the database connection information.

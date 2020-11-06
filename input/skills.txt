@@ -1,0 +1,127 @@
+Adaptive Insights
+Airflow
+Alice
+Alteryx
+AnswerRocket
+Artificial Intelligence
+Autoencoders
+AWS
+Bash
+Bitbucket
+BigQuery
+BrandMap
+C
+C++
+Caffe
+Canva
+Cassandra
+CG
+Chartio
+Classification
+ClicData
+COBOL
+Common Lisp
+Computer Vision
+Convolutional Neural Networks
+CricleCI
+CUDA-Convnet
+D3
+Data Analysis
+Databricks
+Data Engineering
+Data Visualisation
+Database Management
+DBxtra
+Deep Learning
+Deeplearning4j
+Dimensionality Reduction
+Docker
+Domo
+Elasticsearch
+Emacs Lisp
+Erlang
+Excel
+EXEC
+Factor
+Fastai
+Forth
+Fortran
+GCP
+Geckoboard
+Generative Models
+GIS
+Git
+Github
+Gitlab
+Go
+Graph Neural Networks
+Hadoop
+Hbase
+Heap
+Hedge
+Hive
+iDashboards
+Improvado
+Infogram
+Java
+Javascript
+Julia
+Keras
+Kubernetes
+Linux
+Looker
+Lua
+Machine Learning
+Maple
+MariaDB
+Mathematica
+MATLAB
+Mercury
+Minitab
+MoData
+Modelling
+MongoDB
+MQL4
+MySQL
+Natural Language Processing
+Neural Networks
+NLP
+NoSQL
+OpenEdge ABL
+Pascal
+Perl
+PHP
+Plecto
+Plotly
+PostgreSQL
+PowerBI
+PowerShell
+Python
+PyTorch
+R 
+Recurrent Neural Networks
+Regression
+Roambi Analytics
+Ruby
+Rust
+SAS
+Scala
+Scheme
+Scikit-learn
+Scratch
+Sisense
+Sklearn
+SPARK
+Splunk
+SPSS
+SQL
+Stata
+Statistical Modelling
+Statistics
+Tableau
+Tensorflow
+Theano
+Torch
+Variational Autoencoders
+VBScript
+Visual Basic
