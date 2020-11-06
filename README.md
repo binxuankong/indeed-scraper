@@ -30,12 +30,21 @@ ___parallel <br>
 
 
 ### To run
+The *scraper.py* script takes in two arguments
+- Job: Data Analyst, Data Engineer, Machine Learning Engineer, Data Scientist
+- Country: Malaysia, Vietnam, Thailand, Singapore, Philippines, Indonesia
+
+The *scraper_usa.py* script takes in two arguments
+- Job: Data Analyst, Data Engineer, Machine Learning Engineer, Data Scientist
+- State: State to scrape in Abbreviation (NY, AZ, OK, etc.)
+
 ```
 parallel --col-sep '\t' 'python3 scraper.py {1} {2}' :::: args.txt 
 parallel --col-sep '\t' 'python3 scraper_usa.py {1} {2}' :::: args_usa.txt
 ```
 
 ### To clean saved csv files
+THe *cleaner* scripts upload the extracted csv files to the database
 
 ```
 python3 cleaner.py
