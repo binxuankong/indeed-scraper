@@ -14,9 +14,9 @@ _SCRAPER
 
 The input folder contains all keywords to be extracted and excluded<br>
 ___input<br>
-    __`exclude.txt`: keywords to exclude <br>
-    __`level.txt`: title keywords to extract <br>
-    __`skills.txt`: skill keywords to extract
+    __`exclude.txt` : keywords to exclude <br>
+    __`level.txt` : title keywords to extract <br>
+    __`skills.txt` : skill keywords to extract
 
 The job postings will be extracted as csv files into the ouput folders<br>
 ___output<br>
@@ -29,8 +29,8 @@ ___parallel <br>
     __`scraper_usa.py` <br>
     __`cleaner.py` <br>
     __`cleaner_usa.py` <br>
-    __`args.txt`<br>: list of jobs and countries in SEA
-    __`args_usa.txt`<br>: list of jobs and states in USA
+    __`args.txt` : list of jobs and countries in SEA <br>
+    __`args_usa.txt` : list of jobs and states in USA <br>
     __`output`<br>
 
 
