@@ -14,8 +14,8 @@ _SCRAPER
 
 The input folder contains all keywords to be extracted and excluded<br>
 ___input<br>
-    __`exclude.txt`: keywords to exclude
-    __`level.txt`: title keywords to extract
+    __`exclude.txt`: keywords to exclude <br>
+    __`level.txt`: title keywords to extract <br>
     __`skills.txt`: skill keywords to extract
 
 The job postings will be extracted as csv files into the ouput folders<br>
