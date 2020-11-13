@@ -1,221 +1,127 @@
-AB Testing
-AB testing
-AI
-AIML
-API
-AWS
 Adaptive Insights
 Airflow
 Alice
 Alteryx
-Android
-Angular
-AngularJS
 AnswerRocket
 Artificial Intelligence
-AutoCAD
-Autoencoder
 Autoencoders
-Azure
+AWS
 Bash
-Big Data
-BigQuery
 Bitbucket
+BigQuery
 BrandMap
-Business Intelligence
 C
-C#
 C++
-CG
-CICD
-CNN
-CNNs
-COBOL
-CSS
-CUDA-Convnet
 Caffe
 Canva
 Cassandra
+CG
 Chartio
 Classification
 ClicData
-Cloud
+COBOL
 Common Lisp
 Computer Vision
-Convolutional Neural Network
 Convolutional Neural Networks
 CricleCI
+CUDA-Convnet
 D3
-DBxtra
 Data Analysis
+Databricks
 Data Engineering
 Data Visualisation
 Database Management
-Databricks
-Decision Trees
+DBxtra
 Deep Learning
 Deeplearning4j
-DevOps
 Dimensionality Reduction
-Distribution
 Docker
 Domo
-DynamoDB
-ETL
-EXEC
 Elasticsearch
 Emacs Lisp
 Erlang
 Excel
+EXEC
 Factor
 Fastai
 Forth
 Fortran
-Frontend
 GCP
-GIS
 Geckoboard
 Generative Models
+GIS
 Git
-GitHub
-GitLab
 Github
 Gitlab
 Go
-Golang
 Graph Neural Networks
-HBase
-HTML
 Hadoop
 Hbase
 Heap
 Hedge
 Hive
-Impala
+iDashboards
 Improvado
 Infogram
-JIRA
-JS
-JSON
 Java
-JavaScript
 Javascript
-Jenkins
-Jira
 Julia
-Jupyter
-Kafka
 Keras
 Kubernetes
 Linux
 Looker
 Lua
-MATLAB
-ML
-MQL4
-MS Office
-MS SQL
 Machine Learning
-MapReduce
 Maple
 MariaDB
 Mathematica
-Matlab
+MATLAB
 Mercury
-Microsoft Office
 Minitab
 MoData
 Modelling
 MongoDB
+MQL4
 MySQL
-NET
-NLP
-Naive Bayes
 Natural Language Processing
-Networking
-Neural Network
 Neural Networks
+NLP
 NoSQL
-NodeJS
-Nodejs
-OpenCV
 OpenEdge ABL
-Oracle
-PHP
-PLSQL
-Pandas
 Pascal
 Perl
-Php
-Pig
+PHP
 Plecto
 Plotly
 PostgreSQL
-Power BI
 PowerBI
-PowerPoint
 PowerShell
-PySpark
-PyTorch
-Pyspark
 Python
-Pytorch
-QA
-Qlik
+PyTorch
 R 
-RDBMS
-REST
-RESTful
-RNN
-RNNs
-Random Forest
-ReactJS
-Recurrent Neural Network
 Recurrent Neural Networks
-Redshift
 Regression
 Roambi Analytics
 Ruby
 Rust
-SAP
 SAS
-SCADA
-SPARK
-SPSS
-SQL
-SVM
-Salesforce
 Scala
 Scheme
 Scikit-learn
-Scikitlearn
 Scratch
-Shell
 Sisense
 Sklearn
-Software Development
-Software Engineering
-Spark
+SPARK
 Splunk
-Spring
+SPSS
+SQL
 Stata
 Statistical Modelling
 Statistics
-Swift
-TCPIP
 Tableau
-TensorFlow
 Tensorflow
 Theano
 Torch
-UNIX
-Unix
-VBA
-VBScript
-VMware
-Variational Autoencoder
 Variational Autoencoders
+VBScript
 Visual Basic
-Windows
-XML
-iDashboards

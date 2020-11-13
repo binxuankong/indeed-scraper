@@ -16,6 +16,7 @@ from bs4 import BeautifulSoup
 from sqlalchemy import create_engine
 from requests_html import HTMLSession
 from datetime import datetime, timedelta
+from skill_matching import skill_dict
 
 import time
 start_time = time.time()
@@ -66,9 +67,9 @@ def extract_title(job):
     except:
         return None
 
-    
+
 def extract_age(job):
-    try: 
+    try:
         date_posted = job.find('span', attrs={'class': 'date'}).text
         ndays = return_days_posted(date_posted)
         return int(ndays)
@@ -76,7 +77,7 @@ def extract_age(job):
         return None
 
 def extract_date(job):
-    try: 
+    try:
         date_posted = job.find('span', attrs={'class': 'date'}).text
         ndays = return_days_posted(date_posted)
         date = datetime.now() - timedelta(days=int(ndays))
@@ -84,7 +85,7 @@ def extract_date(job):
         return date
     except:
         return None
-    
+
 def extract_location(job):
     try:
         return job.find('span', attrs={'class': 'location'}).text
@@ -118,45 +119,45 @@ def extract_description_txt(job):
 def extract_page_str(url):
     html = requests.get(url, timeout=100)
     soup = BeautifulSoup(html.content,"html.parser")
-    try: 
+    try:
         return soup.find("div", {"id": "searchCountPages"}).get_text()
     except:
         return str(['1','0'])
-    
+
 # Feedback max_jobs per base_url
 what_job = args.Job.replace(" ","+")
 what_state = args.State
 print(what_job)
-base_url = f"https://www.indeed.com/jobs?q={what_job}&l={what_state}&fromage=7" 
+base_url = f"https://www.indeed.com/jobs?q={what_job}&l={what_state}&fromage=7"
 print(base_url)
 
 jobs_num_str = extract_page_str(base_url)
 job_num =  re.findall(r'(?<!,)\b(\d{1,3}(?:,\d{3})*)\b(?!,)', jobs_num_str)
 job_num = int(re.sub(',','', job_num[-1]))
-    
+
 print("No. of Jobs to Scrape:", job_num)
 if (job_num==0):
     max_pages = 0
 if (job_num>1000):
-    max_pages = 100  
+    max_pages = 100
 else:
     max_pages = int(np.ceil(job_num/10))
-print("No. of Pages to Scrape:", max_pages) 
+print("No. of Pages to Scrape:", max_pages)
 
 output = []
-    
+
 # Loop over max pages
 for x in range(0, max_pages):
     if(x==0):
         page_append = ""
-    else: 
+    else:
         page_append = "&start=" + str(x*10)
-        
+
     current_page = requests.get(base_url+page_append)
     page_soup = BeautifulSoup(current_page.content,"html.parser")
-            
+
     for job in page_soup.select(".jobsearch-SerpJobCard"):
-            
+
 
         job_url = job.find(class_='title').a['href']
         session = HTMLSession()
@@ -169,7 +170,7 @@ for x in range(0, max_pages):
         # Get only english headers
         headers = {'Accept-Language': 'en-US,en;q=0.8'}
         job_page = requests.get(job_url, headers , timeout=100 )
-        job_soup = BeautifulSoup(response.content, 'html.parser') 
+        job_soup = BeautifulSoup(response.content, 'html.parser')
 
         # Give URL after redirect (ads/analytics etc.)
         title = extract_title(job)
@@ -194,7 +195,10 @@ for x in range(0, max_pages):
         # Check for keyword
         for index,keyword in enumerate(keywords):
             if keyword in description:
+                if keyword in skill_dict.keys():
+                    keyword = skill_dict[keyword]
                 keywords_present.append(keyword)
+        keywords_present = list(set(keywords_present))
 
         # Check for title keywords
         for index,keyword in enumerate(title_keywords):
@@ -210,20 +214,20 @@ for x in range(0, max_pages):
         df = pd.DataFrame(
                     output, columns=['Job_ID', 'Job_Title', 'Company', 'Salary' , 'Country', 'State',  'Location' ,
                                         'Metadata', 'Date_Posted','Description','Job_URL','Keywords_Present',
-                                        'Title_Keywords']) 
+                                        'Title_Keywords'])
 
         df = df.replace('\n', '', regex=True)
         path = '../output_usa/'
-        
+
         new_path = os.path.join(path + what_job.replace("+", "_") + '.csv')
         if not os.path.isfile(new_path):
             df.to_csv(os.path.join(path + what_job.replace("+", "_") + '.csv'), header='column_names')
-       
+
         # else it exists so append without writing the header
-        else: 
+        else:
             df.to_csv(os.path.join(path+ what_job.replace("+", "_") +'.csv'), mode='a', header=False)
 
 
-        print("Successfuly Scrapped USA:",  what_job, what_state)   
+        print("Successfuly Scrapped USA:",  what_job, what_state)
 
 elapsed_time = time.time() - start_time

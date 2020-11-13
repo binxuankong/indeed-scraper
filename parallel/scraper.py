@@ -19,6 +19,7 @@ from bs4 import BeautifulSoup
 from sqlalchemy import create_engine
 from requests_html import HTMLSession
 from datetime import datetime, timedelta
+from skill_matching import skill_dict
 
 import time
 start_time = time.time()
@@ -334,7 +335,10 @@ for x in range(0, max_pages):
         # Check for keyword
         for index,keyword in enumerate(keywords):
             if keyword in description:
+                if keyword in skill_dict.keys():
+                    keyword = skill_dict[keyword]
                 keywords_present.append(keyword)
+        keywords_present = list(set(keywords_present))
 
         # Check for title keywords
         for index,keyword in enumerate(title_keywords):
