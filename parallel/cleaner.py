@@ -72,7 +72,6 @@ def get_org_and_det(df):
         org_id += 1
         org_det_list.append(org_det)
         org_det_id += 1
-
     df_org2 = pd.DataFrame.from_dict(org_list)
     df_org_det2 = pd.DataFrame.from_dict(org_det_list)
     return df_org2, df_org_det2
@@ -112,7 +111,11 @@ def to_skillstreet_format(df, job_skill_list, job_other_list):
         title_keywords = np.nan
         if len(row['Title_Keywords']) > 0:
             title_keywords = ', '.join(remove_quotes(row['Title_Keywords']))
-        skills = [k for k in row['Keywords_Present'] if k != 'C' and k != 'R']
+        skills = []
+        try:
+            skills = [k for k in row['Keywords_Present'] if k != 'C' and k != 'R']
+        except:
+            pass
         skills.extend(extract_skills(row['Description']))
         process_skills(job_id, list(set(skills)), job_skill_list, job_other_list)
         job = {
