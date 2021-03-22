@@ -19,6 +19,7 @@ from bs4 import BeautifulSoup
 from sqlalchemy import create_engine
 from requests_html import HTMLSession
 from datetime import datetime, timedelta
+from configs import headers_list
 from skill_matching import skill_dict
 
 import time
@@ -48,58 +49,6 @@ default_parameters = {
         'exclude_keywords':[line.strip() for line in open('../input/exclude.txt', 'r')],
         'title_keywords':[line.strip() for line in open('../input/level.txt', 'r')],
     }
-
-headers_list = [
-    # Firefox 77 Mac
-     {
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:77.0) Gecko/20100101 Firefox/77.0",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-        "Accept-Language": "en-US,en;q=0.5",
-        "Referer": "https://www.google.com/",
-        "DNT": "1",
-        "Connection": "keep-alive",
-        "Upgrade-Insecure-Requests": "1"
-    },
-    # Firefox 77 Windows
-    {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:77.0) Gecko/20100101 Firefox/77.0",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-        "Accept-Language": "en-US,en;q=0.5",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Referer": "https://www.google.com/",
-        "DNT": "1",
-        "Connection": "keep-alive",
-        "Upgrade-Insecure-Requests": "1"
-    },
-    # Chrome 83 Mac
-    {
-        "Connection": "keep-alive",
-        "DNT": "1",
-        "Upgrade-Insecure-Requests": "1",
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-        "Sec-Fetch-Site": "none",
-        "Sec-Fetch-Mode": "navigate",
-        "Sec-Fetch-Dest": "document",
-        "Referer": "https://www.google.com/",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Accept-Language": "en-GB,en-US;q=0.9,en;q=0.8"
-    },
-    # Chrome 83 Windows
-    {
-        "Connection": "keep-alive",
-        "Upgrade-Insecure-Requests": "1",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-        "Sec-Fetch-Site": "same-origin",
-        "Sec-Fetch-Mode": "navigate",
-        "Sec-Fetch-User": "?1",
-        "Sec-Fetch-Dest": "document",
-        "Referer": "https://www.google.com/",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Accept-Language": "en-US,en;q=0.9"
-    }
-]
 
 # Create ordered dict from Headers above
 ordered_headers_list = []
@@ -184,7 +133,7 @@ def extract_location(job):
     except:
         return None
 
-def extract_company(job_soup):
+def extract_company(job):
     try:
         return job.find('span', attrs={'class': 'company'}).text
     except:
@@ -309,7 +258,7 @@ for x in range(0, max_pages):
 
         # Get only english headers
         headers = {'Accept-Language': 'en-US,en;q=0.8'}
-        # job_page = requests.get(job_url, headers , timeout=100 )
+        # job_page = requests.get(job_url, headers, timeout=100 )
         job_soup = BeautifulSoup(response.content, 'html.parser')
 
         # Give URL after redirect (ads/analytics etc.)
@@ -322,7 +271,6 @@ for x in range(0, max_pages):
         salary = extract_salary(job)
 
         # Get description, rating and present keywords
-
         description = extract_description_txt(job_soup)
         keywords = default_parameters['skills_keywords']
         title_keywords = default_parameters['title_keywords']
@@ -331,9 +279,8 @@ for x in range(0, max_pages):
         keywords_present = []
         title_keywords_present = []
 
-
         # Check for keyword
-        for index,keyword in enumerate(keywords):
+        for index, keyword in enumerate(keywords):
             if keyword in description:
                 if keyword in skill_dict.keys():
                     keyword = skill_dict[keyword]
@@ -341,13 +288,12 @@ for x in range(0, max_pages):
         keywords_present = list(set(keywords_present))
 
         # Check for title keywords
-        for index,keyword in enumerate(title_keywords):
+        for index, keyword in enumerate(title_keywords):
             if keyword in title:
                 title_keywords_present.append(keyword)
 
         keywords_present = str(keywords_present)[1:-1]
         title_keywords_present = str(title_keywords_present)[1:-1]
-
 
         output.append([ID, title, company, salary, args.Country, 'Not Applicable', location, metadata, date, description, job_url, keywords_present,title_keywords_present])
 
@@ -367,5 +313,8 @@ for x in range(0, max_pages):
 
         counter += 1
         print("Successfuly Scraped SEA: {} {}\tJob No: {}/{}".format(what_job, args.Country, counter, job_num))
+        time.sleep(random.uniform(1, 3))
+    
+    time.sleep(random.uniform(3, 5))
 
 elapsed_time = time.time() - start_time

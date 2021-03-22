@@ -16,6 +16,7 @@ from bs4 import BeautifulSoup
 from sqlalchemy import create_engine
 from requests_html import HTMLSession
 from datetime import datetime, timedelta
+from configs import headers_list
 from skill_matching import skill_dict
 
 import time
@@ -38,7 +39,6 @@ args = parser.parse_args()
 print(args)
 
 default_parameters = {
-
         'skills_keywords':[line.strip() for line in open('../input/skills.txt', 'r')],
         'exclude_keywords':[line.strip() for line in open('../input/exclude.txt', 'r')],
         'title_keywords':[line.strip() for line in open('../input/level.txt', 'r')],
@@ -92,9 +92,9 @@ def extract_location(job):
     except:
         return None
 
-def extract_company(job_soup):
+def extract_company(job):
     try:
-        return job_soup.find(class_="icl-u-lg-mr--sm").get_text()
+        return job.find('span', attrs={'class': 'company'}).text
     except:
         return None
 
@@ -117,7 +117,8 @@ def extract_description_txt(job):
         return str('No Description')
 
 def extract_page_str(url):
-    html = requests.get(url, timeout=100)
+    headers = random.choice(headers_list)
+    html = requests.get(url, headers=headers, timeout=100)
     soup = BeautifulSoup(html.content,"html.parser")
     try:
         return soup.find("div", {"id": "searchCountPages"}).get_text()
@@ -153,28 +154,25 @@ for x in range(0, max_pages):
     else:
         page_append = "&start=" + str(x*10)
 
-    current_page = requests.get(base_url+page_append)
+    headers = random.choice(headers_list)
+    current_page = requests.get(base_url+page_append, headers=headers)
     page_soup = BeautifulSoup(current_page.content,"html.parser")
 
     for job in page_soup.select(".jobsearch-SerpJobCard"):
-
-
         job_url = job.find(class_='title').a['href']
         session = HTMLSession()
+        
         # Correct for truncated URLs
-        response = session.get(f"https://www.indeed.com/" + job_url if (job_url.startswith("/")) else job_url)
-
-        # Correct for truncated URLs
-        job_url = f"https://www.indeed.com/" + job_url if (job_url.startswith("/")) else job_url
+        job_url = f"https://www.indeed.com/" + job_url[1:] if job_url.startswith("/") else job_url
+        response = session.get(job_url)
 
         # Get only english headers
         headers = {'Accept-Language': 'en-US,en;q=0.8'}
-        job_page = requests.get(job_url, headers , timeout=100 )
-        job_soup = BeautifulSoup(response.content, 'html.parser')
+        job_soup = BeautifulSoup(response.content, 'html.parser') 
 
         # Give URL after redirect (ads/analytics etc.)
         title = extract_title(job)
-        company = extract_company(job_soup)
+        company = extract_company(job)
         location = extract_location(job)
         metadata = extract_metadata(job)
         date = extract_date(job)
@@ -191,9 +189,8 @@ for x in range(0, max_pages):
         keywords_present = []
         title_keywords_present = []
 
-
         # Check for keyword
-        for index,keyword in enumerate(keywords):
+        for index, keyword in enumerate(keywords):
             if keyword in description:
                 if keyword in skill_dict.keys():
                     keyword = skill_dict[keyword]
@@ -201,13 +198,12 @@ for x in range(0, max_pages):
         keywords_present = list(set(keywords_present))
 
         # Check for title keywords
-        for index,keyword in enumerate(title_keywords):
+        for index, keyword in enumerate(title_keywords):
             if keyword in title:
                 title_keywords_present.append(keyword)
 
         keywords_present = str(keywords_present)[1:-1]
         title_keywords_present = str(title_keywords_present)[1:-1]
-
 
         output.append([ID, title, company, salary, 'USA', what_state, location, metadata, date, description, job_url, keywords_present,title_keywords_present])
 
@@ -227,7 +223,10 @@ for x in range(0, max_pages):
         else:
             df.to_csv(os.path.join(path+ what_job.replace("+", "_") +'.csv'), mode='a', header=False)
 
-
         print("Successfuly Scrapped USA:",  what_job, what_state)
+
+        time.sleep(random.uniform(1, 3))
+    
+    time.sleep(random.uniform(3, 5))
 
 elapsed_time = time.time() - start_time
