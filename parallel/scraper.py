@@ -102,7 +102,6 @@ def extract_title(job):
     except:
         return None
 
-
 def extract_age(job):
     try:
         date_posted = job.find('span', attrs={'class': 'date'}).text
@@ -227,11 +226,11 @@ counter = 0
 
 # Loop over max pages
 for x in range(0, max_pages):
-    if(x==0):
+    if x == 0:
         page_append = ""
     else:
         page_append = "&start=" + str(x*10)
-
+    
     headers = random.choice(headers_list)
     current_page = requests.get(base_url+page_append, headers=headers)
     page_soup = BeautifulSoup(current_page.content,"html.parser")
@@ -241,7 +240,6 @@ for x in range(0, max_pages):
         job_url = job.find(class_='title').a['href']
 
         session = HTMLSession()
-
         # Correct for truncated URLs
         job_url = country_url + job_url[1:] if job_url.startswith("/") else job_url
         response = session.get(job_url)
@@ -281,17 +279,15 @@ for x in range(0, max_pages):
         for index, keyword in enumerate(title_keywords):
             if keyword in title:
                 title_keywords_present.append(keyword)
-
+        
         keywords_present = str(keywords_present)[1:-1]
         title_keywords_present = str(title_keywords_present)[1:-1]
 
         output.append([ID, title, company, salary, args.Country, 'Not Applicable', location, metadata, date, description, job_url, keywords_present,title_keywords_present])
 
-        df = pd.DataFrame(
-                    output, columns=['Job_ID', 'Job_Title', 'Company', 'Salary' , 'Country', 'State',  'Location' ,
-                                        'Metadata', 'Date_Posted','Description','Job_URL','Keywords_Present',
-                                        'Title_Keywords'])
-
+        df = pd.DataFrame(output, columns=['Job_ID', 'Job_Title', 'Company', 'Salary' , 'Country', 'State',  'Location' ,
+                                        'Metadata', 'Date_Posted','Description','Job_URL','Keywords_Present', 'Title_Keywords'])
+        
         df = df.replace('\n', '', regex=True)
         path = '../output/'
 
@@ -300,7 +296,7 @@ for x in range(0, max_pages):
             df.to_csv(os.path.join(path + what_job.replace("+", "_") + '.csv'), header='column_names')
         else:
             df.to_csv(os.path.join(path+ what_job.replace("+", "_") +'.csv'), mode='a', header=False)
-
+        
         counter += 1
         print("Successfuly Scraped SEA: {} {}\tJob No: {}/{}".format(what_job, args.Country, counter, job_num))
         time.sleep(random.uniform(1, 3))

@@ -63,7 +63,7 @@ def extract_title(job):
         return None
     
 def extract_age(job):
-    try: 
+    try:
         date_posted = job.find('span', attrs={'class': 'date'}).text
         ndays = return_days_posted(date_posted)
         return int(ndays)
@@ -71,7 +71,7 @@ def extract_age(job):
         return None
 
 def extract_date(job):
-    try: 
+    try:
         date_posted = job.find('span', attrs={'class': 'date'}).text
         ndays = return_days_posted(date_posted)
         date = datetime.now() - timedelta(days=int(ndays))
@@ -79,7 +79,7 @@ def extract_date(job):
         return date
     except:
         return None
-    
+
 def extract_location(job):
     try:
         location = job.find('div', attrs={'class': 'companyLocation'})
@@ -90,7 +90,6 @@ def extract_location(job):
 
 def extract_company(job):
     try:
-        # return job_soup.find(class_="icl-u-lg-mr--sm").get_text()
         return job.find('span', attrs={'class': 'companyName'}).text
     except:
         return None
@@ -146,7 +145,7 @@ output = []
 
 # Loop over max pages
 for x in range(0, max_pages):
-    if(x==0):
+    if x == 0:
         page_append = ""
     else:
         page_append = "&start=" + str(x*10)
@@ -201,8 +200,7 @@ for x in range(0, max_pages):
         output.append([ID, title, company, salary, 'USA', what_state, location, metadata, date, description, job_url, keywords_present,title_keywords_present])
 
         df = pd.DataFrame(output, columns=['Job_ID', 'Job_Title', 'Company', 'Salary' , 'Country', 'State',  'Location' ,
-                                        'Metadata', 'Date_Posted','Description','Job_URL','Keywords_Present',
-                                        'Title_Keywords'])
+                                        'Metadata', 'Date_Posted','Description','Job_URL','Keywords_Present', 'Title_Keywords'])
         
         df = df.replace('\n', '', regex=True)
         path = '../output_usa/'
