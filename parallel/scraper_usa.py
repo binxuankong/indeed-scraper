@@ -3,15 +3,11 @@
 
 import os
 import re
-import csv
-import sys
-import urllib
-import pymysql
+import random
 import argparse
 import numpy as np
 import pandas as pd
-import requests, json
-from itertools import product
+import requests
 from bs4 import BeautifulSoup
 from sqlalchemy import create_engine
 from requests_html import HTMLSession
@@ -26,7 +22,6 @@ start_time = time.time()
 parser = argparse.ArgumentParser()
 
 # Add the arguments
-
 parser.add_argument('Job',
                        type=str,
                        help='the Job to scrape')
@@ -57,19 +52,18 @@ def return_days_posted(job_posted):
 
 def extract_salary(job):
     try:
-        return job.find('span', attrs={'class': 'salaryText'}).text
+        return job.find('span', attrs={'class': 'salary-snippet'}).text
     except:
         return None
 
 def extract_title(job):
     try:
-        return job.find(class_='title').a['title']
+        return job.find('h2', attrs={'class': 'jobTitle'}).find_all('span')[-1].text
     except:
         return None
-
-
+    
 def extract_age(job):
-    try:
+    try: 
         date_posted = job.find('span', attrs={'class': 'date'}).text
         ndays = return_days_posted(date_posted)
         return int(ndays)
@@ -77,7 +71,7 @@ def extract_age(job):
         return None
 
 def extract_date(job):
-    try:
+    try: 
         date_posted = job.find('span', attrs={'class': 'date'}).text
         ndays = return_days_posted(date_posted)
         date = datetime.now() - timedelta(days=int(ndays))
@@ -85,16 +79,19 @@ def extract_date(job):
         return date
     except:
         return None
-
+    
 def extract_location(job):
     try:
-        return job.find('span', attrs={'class': 'location'}).text
+        location = job.find('div', attrs={'class': 'companyLocation'})
+        span_text = ''.join([s.text for s in location.find_all('span')])
+        return location.text[:-len(span_text)].strip()
     except:
         return None
 
 def extract_company(job):
     try:
-        return job.find('span', attrs={'class': 'company'}).text
+        # return job_soup.find(class_="icl-u-lg-mr--sm").get_text()
+        return job.find('span', attrs={'class': 'companyName'}).text
     except:
         return None
 
@@ -158,12 +155,9 @@ for x in range(0, max_pages):
     current_page = requests.get(base_url+page_append, headers=headers)
     page_soup = BeautifulSoup(current_page.content,"html.parser")
 
-    for job in page_soup.select(".jobsearch-SerpJobCard"):
-        job_url = job.find(class_='title').a['href']
+    for job in page_soup.select(".tapItem"):
         session = HTMLSession()
-        
-        # Correct for truncated URLs
-        job_url = f"https://www.indeed.com/" + job_url[1:] if job_url.startswith("/") else job_url
+        job_url = f"https://www.indeed.com" + job['href']
         response = session.get(job_url)
 
         # Get only english headers
@@ -180,7 +174,6 @@ for x in range(0, max_pages):
         salary = extract_salary(job)
 
         # Get description, rating and present keywords
-
         description = extract_description_txt(job_soup)
         keywords = default_parameters['skills_keywords']
         title_keywords = default_parameters['title_keywords']
@@ -201,28 +194,26 @@ for x in range(0, max_pages):
         for index, keyword in enumerate(title_keywords):
             if keyword in title:
                 title_keywords_present.append(keyword)
-
+        
         keywords_present = str(keywords_present)[1:-1]
         title_keywords_present = str(title_keywords_present)[1:-1]
 
         output.append([ID, title, company, salary, 'USA', what_state, location, metadata, date, description, job_url, keywords_present,title_keywords_present])
 
-        df = pd.DataFrame(
-                    output, columns=['Job_ID', 'Job_Title', 'Company', 'Salary' , 'Country', 'State',  'Location' ,
+        df = pd.DataFrame(output, columns=['Job_ID', 'Job_Title', 'Company', 'Salary' , 'Country', 'State',  'Location' ,
                                         'Metadata', 'Date_Posted','Description','Job_URL','Keywords_Present',
                                         'Title_Keywords'])
-
+        
         df = df.replace('\n', '', regex=True)
         path = '../output_usa/'
 
         new_path = os.path.join(path + what_job.replace("+", "_") + '.csv')
         if not os.path.isfile(new_path):
             df.to_csv(os.path.join(path + what_job.replace("+", "_") + '.csv'), header='column_names')
-
         # else it exists so append without writing the header
         else:
             df.to_csv(os.path.join(path+ what_job.replace("+", "_") +'.csv'), mode='a', header=False)
-
+        
         print("Successfuly Scrapped USA:",  what_job, what_state)
 
         time.sleep(random.uniform(1, 3))

@@ -3,17 +3,13 @@
 
 import os
 import re
-import csv
-import sys
-import urllib
-import pymysql
+import random
 import argparse
 import numpy as np
 import pandas as pd
-import requests, json
+import requests
 import random
 from collections import OrderedDict
-from itertools import product, cycle
 from lxml.html import fromstring
 from bs4 import BeautifulSoup
 from sqlalchemy import create_engine
@@ -30,7 +26,6 @@ start_time = time.time()
 parser = argparse.ArgumentParser()
 
 # Add the arguments
-
 parser.add_argument('Job',
                        type=str,
                        help='the Job to scrape')
@@ -41,7 +36,6 @@ parser.add_argument('Country',
 # Execute the parse_args() method
 args = parser.parse_args()
 print(args)
-
 
 default_parameters = {
 
@@ -206,8 +200,7 @@ def fetch_country_url(country):
         return 'https://www.indeed.co.uk/'
 
 
- # Feedback max_jobs per base_url
-
+# Feedback max_jobs per base_url
 country_url = fetch_country_url(args.Country)
 print(country_url)
 
@@ -215,9 +208,6 @@ what_job = args.Job.replace(" ","+")
 print(what_job)
 base_url = f"{country_url}jobs?q={what_job}&fromage=7"
 print(base_url)
-
-# proxies = get_proxies()
-# proxy_pool = cycle(proxies)
 
 jobs_num_str = extract_page_str(base_url, use_proxy=True)
 job_num =  re.findall(r'(?<!,)\b(\d{1,3}(?:,\d{3})*)\b(?!,)', jobs_num_str)
