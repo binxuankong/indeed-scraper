@@ -2,220 +2,53 @@
 # coding: utf-8
 
 import os
-import re
-import random
 import argparse
-import numpy as np
 import pandas as pd
-import requests
-from bs4 import BeautifulSoup
-from sqlalchemy import create_engine
-from requests_html import HTMLSession
-from datetime import datetime, timedelta
-from configs import headers_list
-from skill_matching import skill_dict
-
 import time
-start_time = time.time()
+from scraping_functions import *
 
 # Create the parser
 parser = argparse.ArgumentParser()
 
 # Add the arguments
-parser.add_argument('Job',
-                       type=str,
-                       help='the Job to scrape')
-parser.add_argument('State',
-                       type=str,
-                       help='the State to scrape in Abbreviation')
+parser.add_argument('Job', type=str, help='the Job to scrape')
+parser.add_argument('State', type=str, help='the State to scrape in Abbreviation')
 
 # Execute the parse_args() method
 args = parser.parse_args()
 print(args)
 
-default_parameters = {
-        'skills_keywords':[line.strip() for line in open('../input/skills.txt', 'r')],
-        'exclude_keywords':[line.strip() for line in open('../input/exclude.txt', 'r')],
-        'title_keywords':[line.strip() for line in open('../input/level.txt', 'r')],
-    }
-
-def return_days_posted(job_posted):
-        days = job_posted.split()[0]
-        if days == 'Just':
-            return 0
-        elif days == 'Today':
-            return 0
-        elif days == '30+':
-            return 31
-        else:
-            return days
-
-def extract_salary(job):
-    try:
-        return job.find('span', attrs={'class': 'salary-snippet'}).text
-    except:
-        return None
-
-def extract_title(job):
-    try:
-        return job.find('h2', attrs={'class': 'jobTitle'}).find_all('span')[-1].text
-    except:
-        return None
-    
-def extract_age(job):
-    try:
-        date_posted = job.find('span', attrs={'class': 'date'}).text
-        ndays = return_days_posted(date_posted)
-        return int(ndays)
-    except:
-        return None
-
-def extract_date(job):
-    try:
-        date_posted = job.find('span', attrs={'class': 'date'}).text
-        ndays = return_days_posted(date_posted)
-        date = datetime.now() - timedelta(days=int(ndays))
-        date = date.date()
-        return date
-    except:
-        return None
-
-def extract_location(job):
-    try:
-        location = job.find('div', attrs={'class': 'companyLocation'})
-        span_text = ''.join([s.text for s in location.find_all('span')])
-        return location.text[:-len(span_text)].strip()
-    except:
-        return None
-
-def extract_company(job):
-    try:
-        return job.find('span', attrs={'class': 'companyName'}).text
-    except:
-        return None
-
-def extract_metadata(job):
-    try:
-        return job.find('span', attrs= {'class':'jobsearch-JobMetadataHeader-iconLabel'})
-    except:
-        return None
-
-def extract_id(job):
-    try:
-        return job.get('data-jk', None)
-    except:
-        return None
-
-def extract_description_txt(job):
-    try:
-        return job.find(id="jobDescriptionText").get_text()
-    except:
-        return str('No Description')
-
-def extract_page_str(url):
-    headers = random.choice(headers_list)
-    html = requests.get(url, headers=headers, timeout=100)
-    soup = BeautifulSoup(html.content,"html.parser")
-    try:
-        return soup.find("div", {"id": "searchCountPages"}).get_text()
-    except:
-        return str(['1','0'])
-
 # Feedback max_jobs per base_url
-what_job = args.Job.replace(" ","+")
+what_job = args.Job.replace(" ", "+")
 what_state = args.State
 print(what_job)
 base_url = f"https://www.indeed.com/jobs?q={what_job}&l={what_state}&fromage=7"
 print(base_url)
 
-jobs_num_str = extract_page_str(base_url)
-job_num =  re.findall(r'(?<!,)\b(\d{1,3}(?:,\d{3})*)\b(?!,)', jobs_num_str)
-job_num = int(re.sub(',','', job_num[-1]))
+job_num, max_pages = get_job_num(base_url)
+counter = 0
 
-print("No. of Jobs to Scrape:", job_num)
-if (job_num==0):
-    max_pages = 0
-if (job_num>1000):
-    max_pages = 100
-else:
-    max_pages = int(np.ceil(job_num/10))
-print("No. of Pages to Scrape:", max_pages)
-
-output = []
-
-# Loop over max pages
 for x in range(0, max_pages):
-    if x == 0:
-        page_append = ""
-    else:
-        page_append = "&start=" + str(x*10)
-
-    headers = random.choice(headers_list)
-    current_page = requests.get(base_url+page_append, headers=headers)
-    page_soup = BeautifulSoup(current_page.content,"html.parser")
+    output = []
+    page_soup = get_page_soup(x, base_url)
 
     for job in page_soup.select(".tapItem"):
-        session = HTMLSession()
-        job_url = f"https://www.indeed.com" + job['href']
-        response = session.get(job_url)
-
-        # Get only english headers
-        headers = {'Accept-Language': 'en-US,en;q=0.8'}
-        job_soup = BeautifulSoup(response.content, 'html.parser') 
-
-        # Give URL after redirect (ads/analytics etc.)
-        title = extract_title(job)
-        company = extract_company(job)
-        location = extract_location(job)
-        metadata = extract_metadata(job)
-        date = extract_date(job)
-        ID = extract_id(job)
-        salary = extract_salary(job)
-
-        # Get description, rating and present keywords
-        description = extract_description_txt(job_soup)
-        keywords = default_parameters['skills_keywords']
-        title_keywords = default_parameters['title_keywords']
-        exclude_keywords = default_parameters['exclude_keywords']
-        total_keywords = len(keywords) + len(title_keywords)
-        keywords_present = []
-        title_keywords_present = []
-
-        # Check for keyword
-        for index, keyword in enumerate(keywords):
-            if keyword in description:
-                if keyword in skill_dict.keys():
-                    keyword = skill_dict[keyword]
-                keywords_present.append(keyword)
-        keywords_present = list(set(keywords_present))
-
-        # Check for title keywords
-        for index, keyword in enumerate(title_keywords):
-            if keyword in title:
-                title_keywords_present.append(keyword)
-        
-        keywords_present = str(keywords_present)[1:-1]
-        title_keywords_present = str(title_keywords_present)[1:-1]
-
-        output.append([ID, title, company, salary, 'USA', what_state, location, metadata, date, description, job_url, keywords_present,title_keywords_present])
-
-        df = pd.DataFrame(output, columns=['Job_ID', 'Job_Title', 'Company', 'Salary' , 'Country', 'State',  'Location' ,
-                                        'Metadata', 'Date_Posted','Description','Job_URL','Keywords_Present', 'Title_Keywords'])
-        
-        df = df.replace('\n', '', regex=True)
-        path = '../output_usa/'
-
-        new_path = os.path.join(path + what_job.replace("+", "_") + '.csv')
-        if not os.path.isfile(new_path):
-            df.to_csv(os.path.join(path + what_job.replace("+", "_") + '.csv'), header='column_names')
-        # else it exists so append without writing the header
-        else:
-            df.to_csv(os.path.join(path+ what_job.replace("+", "_") +'.csv'), mode='a', header=False)
-        
-        print("Successfuly Scrapped USA:",  what_job, what_state)
-
+        infos = get_job_info(job)
+        infos['Country'] = 'USA'
+        infos['State'] = what_state
+        output.append(infos)
+        print("Successfuly Scrapped Job No {}/{}: {}".format(counter, job_num, infos['Job_Title']))
+        # Wait
         time.sleep(random.uniform(1, 3))
     
+    df = pd.DataFrame.from_dict(output)
+    df = df.replace('\n', '', regex=True)
+    path = '../output_usa/'
+    new_path = os.path.join(path + what_job.replace("+", "_") + '.csv')
+    if not os.path.isfile(new_path):
+        df.to_csv(os.path.join(path + what_job.replace("+", "_") + '.csv'), header='column_names')
+    # else it exists so append without writing the header
+    else:
+        df.to_csv(os.path.join(path+ what_job.replace("+", "_") +'.csv'), mode='a', header=False)
+    # Wait
     time.sleep(random.uniform(3, 5))
-
-elapsed_time = time.time() - start_time
