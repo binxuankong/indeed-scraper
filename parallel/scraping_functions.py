@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from requests_html import HTMLSession
 from lxml.html import fromstring
 from datetime import datetime, timedelta
-from configs import headers_list
+from configs import headers_list, custom_cookie
 from skill_matching import skill_dict
 
 default_parameters = {
@@ -15,8 +15,8 @@ default_parameters = {
         'title_keywords':[line.strip() for line in open('../input/level.txt', 'r')],
     }
 
-def get_job_num(base_url):
-    jobs_num_str = extract_page_str(base_url)
+def get_job_num(base_url, use_cookie=False):
+    jobs_num_str = extract_page_str(base_url, use_cookie)
     job_num =  re.findall(r'(?<!,)\b(\d{1,3}(?:,\d{3})*)\b(?!,)', jobs_num_str)
     job_num = int(re.sub(',','', job_num[-1]))
     print("No. of Jobs to Scrape:", job_num)
@@ -29,12 +29,12 @@ def get_job_num(base_url):
     print("No. of Pages to Scrape:", max_pages)
     return job_num, max_pages
 
-def get_page_soup(x, base_url):
+def get_page_soup(x, base_url, use_cookie=False):
     if x == 0:
         page_append = ""
     else:
         page_append = "&start=" + str(x*10)
-    headers = random.choice(headers_list)
+    headers = random_headers(use_cookie)
     current_page = requests.get(base_url+page_append, headers=headers, timeout=100)
     page_soup = BeautifulSoup(current_page.content, "html.parser")
     return page_soup
@@ -63,14 +63,14 @@ def get_job_info(job):
     keywords_present = []
     title_keywords_present = []
     # Check for keyword
-    for index, keyword in enumerate(keywords):
+    for _, keyword in enumerate(keywords):
         if keyword in description:
             if keyword in skill_dict.keys():
                 keyword = skill_dict[keyword]
             keywords_present.append(keyword)
     keywords_present = list(set(keywords_present))
     # Check for title keywords
-    for index, keyword in enumerate(title_keywords):
+    for _, keyword in enumerate(title_keywords):
         if keyword in title:
             title_keywords_present.append(keyword)
     keywords_present = str(keywords_present)[1:-1]
@@ -114,6 +114,12 @@ def get_proxies():
             proxy = ":".join([i.xpath('.//td[1]/text()')[0], i.xpath('.//td[2]/text()')[0]])
             proxies.add(proxy)
     return proxies
+
+def random_headers(use_cookie=False):
+    headers = random.choice(headers_list)
+    if use_cookie:
+        headers['Cookie'] = custom_cookie
+    return headers
 
 def return_days_posted(job_posted):
         days = job_posted.split()[0]
@@ -160,7 +166,10 @@ def extract_location(job):
     try:
         location = job.find('div', attrs={'class': 'companyLocation'})
         span_text = ''.join([s.text for s in location.find_all('span')])
-        return location.text[:-len(span_text)].strip()
+        if len(span_text) > 0:
+            return location.text[:-len(span_text)].strip()
+        else:
+            return location.text.strip()
     except:
         return None
 
@@ -188,8 +197,8 @@ def extract_description_txt(job):
     except:
         return str('No Description')
 
-def extract_page_str(url):
-    headers = random.choice(headers_list)
+def extract_page_str(url, use_cookie=False):
+    headers = random_headers(use_cookie)
     html = requests.get(url, headers=headers, timeout=100)
     soup = BeautifulSoup(html.content,"html.parser")
     try:

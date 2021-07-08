@@ -36,18 +36,21 @@ print(what_job)
 base_url = f"{country_url}jobs?q={what_job}&fromage=7"
 print(base_url)
 
-job_num, max_pages = get_job_num(base_url)
+use_cookie = False
+
+job_num, max_pages = get_job_num(base_url, use_cookie)
 counter = 0
 
 for x in range(0, max_pages):
     output = []
-    page_soup = get_page_soup(x, base_url)
+    page_soup = get_page_soup(x, base_url, use_cookie)
 
     for job in page_soup.select(".tapItem"):
         infos = get_job_info(job)
         infos['Country'] = args.Country
         # infos['State'] = 'Not Applicable'
         output.append(infos)
+        counter += 1
         print("Successfuly Scrapped Job No {}/{}: {}".format(counter, job_num, infos['Job_Title']))
         # Wait
         time.sleep(random.uniform(1, 3))
