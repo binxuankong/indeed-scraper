@@ -22,7 +22,7 @@ print(args)
 what_job = args.Job.replace(" ", "+")
 what_state = args.State
 print(what_job)
-base_url = f"https://www.indeed.com/jobs?q={what_job}&l={what_state}&fromage=7"
+base_url = f"https://www.indeed.com/jobs?q=\"{what_job}\"&l={what_state}&fromage=7"
 print(base_url)
 
 use_cookie = True

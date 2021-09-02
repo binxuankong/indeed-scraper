@@ -33,7 +33,7 @@ print(country_url)
 
 what_job = args.Job.replace(" ", "+")
 print(what_job)
-base_url = f"{country_url}jobs?q={what_job}&fromage=7"
+base_url = f"{country_url}jobs?q=\"{what_job}\"&fromage=7"
 print(base_url)
 
 use_cookie = False
