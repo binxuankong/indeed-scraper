@@ -193,7 +193,7 @@ def extract_id(job):
 
 def extract_description_txt(job):
     try:
-        return job.find(id="jobDescriptionText").get_text()
+        return job.find(id="jobDescriptionText").get_text(separator="\n")
     except:
         return str('No Description')
 
