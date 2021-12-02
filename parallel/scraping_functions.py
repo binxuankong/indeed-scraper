@@ -155,6 +155,7 @@ def extract_age(job):
 def extract_date(job):
     try:
         date_posted = job.find('span', attrs={'class': 'date'}).text
+        date_posted = date_posted.replace('Posted', '')
         ndays = return_days_posted(date_posted)
         date = datetime.now() - timedelta(days=int(ndays))
         date = date.date()

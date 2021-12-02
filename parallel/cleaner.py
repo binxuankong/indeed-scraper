@@ -25,6 +25,7 @@ csvfiles = glob.glob(os.path.join(csvdir, '*.csv'))
 for csvfile in csvfiles:
     what_job = os.path.split(os.path.splitext(csvfile)[0])[1]
     df = pd.read_csv(csvfile)
+    df['Date_Posted'] = pd.to_datetime(df['Date_Posted'])
     df = df.drop_duplicates()
     df.to_sql(name = what_job, con=engine, if_exists='append', index=False)
     df_all = df_all.append(df)
