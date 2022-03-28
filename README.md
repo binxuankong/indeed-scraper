@@ -69,8 +69,8 @@ python3 cleaner.py
 python3 cleaner_usa.py
 ```
 
-### Circumevene Indeed IP block
-Running all the scripts concurrently might result in IP being blocked by Indeed. A shadow user agent and proxy rotation is being used in the script but they do not work very well. To circumstance this, try scraping at diffrent time and scrape for each job separately (Running the scraper script separtely at different time instead of using parallel).
+### Circumvene Indeed IP block
+Running all the scripts concurrently might result in IP address being blocked by Indeed. A shadow user agent and proxy rotation is being used in the script but they do not work very well. To avoid this, try scraping at different time and scrape for each job separately (Running the scraper script separtely at different time instead of using parallel).
 
 Another option is to visit any Indeed job postings website on a Chrome-based browser and Inspect > Network. Copy the **cookie** from the Request Headers from the browser and replace the cookie in the `configs.py` file.
 
