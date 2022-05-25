@@ -28,5 +28,5 @@ for csvfile in csvfiles:
     df = pd.read_csv(csvfile)
     df['Date_Posted'] = pd.to_datetime(df['Date_Posted'])
     df = df.drop_duplicates()
-    df.to_sql(name = what_job, con=engine, if_exists='append', index=False)
+    df.to_sql(name=what_job, con=engine, if_exists='append', index=False)
     engine.dispose()
