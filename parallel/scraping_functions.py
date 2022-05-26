@@ -39,13 +39,18 @@ def get_page_soup(x, base_url, use_cookie=False):
     page_soup = BeautifulSoup(current_page.content, "html.parser")
     return page_soup
 
-def get_job_info(job):
+def get_job_info(job, url="https://www.indeed.com"):
     session = HTMLSession()
-    job_url = f"https://www.indeed.com" + job['href']
-    response = session.get(job_url)
-    # Get only english headers
-    headers = {'Accept-Language': 'en-US,en;q=0.8'}
-    job_soup = BeautifulSoup(response.content, 'html.parser')
+    job_url = None
+    try:
+        job_url = url + job.find('a')['href']
+        response = session.get(job_url)
+        job_soup = BeautifulSoup(response.content, 'html.parser')
+        description = extract_description_txt(job_soup)
+    except:
+        description = extract_description(job)
+    if len(description) == 0 or description == 'No Description':
+        description = extract_description(job)
     # Get info
     title = extract_title(job)
     company = extract_company(job)
@@ -188,15 +193,21 @@ def extract_metadata(job):
 
 def extract_id(job):
     try:
-        return job.get('data-jk', None)
+        return job.find('a').get('data-jk', None)
     except:
         return None
+
+def extract_description(job):
+    try:
+        return job.find('div', attrs={'class': 'job-snippet'}).get_text(separator="\n")
+    except:
+        return 'No Description'
 
 def extract_description_txt(job):
     try:
         return job.find(id="jobDescriptionText").get_text(separator="\n")
     except:
-        return str('No Description')
+        return 'No Description'
 
 def extract_page_str(url, use_cookie=False):
     headers = random_headers(use_cookie)
